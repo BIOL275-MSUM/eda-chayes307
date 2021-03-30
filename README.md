@@ -13,7 +13,121 @@ Connor Hayes
 
 # Data aquisition- we determined the data that we aquired largely based on the CDC data. This is because it is a trustworthy source for national data of specific disease statistics, from there we had to get on the national influenza database and we had to determine the two years that we are looking for, 2019 our non COVID year and 2020-2021 for our data. From there we get our excel file and determine what weeks we need to do. (Centers for Disease Control and Prevention 2020)
 
+``` r
+library(tidyverse)
+```
+
+    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+
+    ## v ggplot2 3.3.3     v purrr   0.3.4
+    ## v tibble  3.0.4     v dplyr   1.0.2
+    ## v tidyr   1.1.2     v stringr 1.4.0
+    ## v readr   1.4.0     v forcats 0.5.0
+
+    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
+library(readr)
+```
+
+``` r
+X2019_2020 <- read_csv("data/2019-2020.csv", skip = 1,)
+```
+
+    ## 
+    ## -- Column specification --------------------------------------------------------
+    ## cols(
+    ##   YEAR = col_double(),
+    ##   WEEK = col_double(),
+    ##   `AGE 0-4` = col_double(),
+    ##   `AGE 5-24` = col_double(),
+    ##   `AGE 25-49` = col_double(),
+    ##   `AGE 25-64` = col_character(),
+    ##   `AGE 50-64` = col_double(),
+    ##   `AGE 65` = col_double(),
+    ##   ILITOTAL = col_double(),
+    ##   `TOTAL PATIENTS` = col_double(),
+    ##   `NUM. OF PROVIDERS` = col_double(),
+    ##   `%UNWEIGHTED ILI` = col_double(),
+    ##   `% WEIGHTED ILI` = col_double()
+    ## )
+
+``` r
+View(X2019_2020)
+X2020_2021 <- read_csv("data/2020-2021.csv", 
+                       skip = 1)
+```
+
+    ## 
+    ## -- Column specification --------------------------------------------------------
+    ## cols(
+    ##   `REGION TYPE` = col_character(),
+    ##   REGION = col_character(),
+    ##   YEAR = col_double(),
+    ##   WEEK = col_double(),
+    ##   `% WEIGHTED ILI` = col_double(),
+    ##   `%UNWEIGHTED ILI` = col_double(),
+    ##   `AGE 0-4` = col_double(),
+    ##   `AGE 25-49` = col_double(),
+    ##   `AGE 25-64` = col_character(),
+    ##   `AGE 5-24` = col_double(),
+    ##   `AGE 50-64` = col_double(),
+    ##   `AGE 65` = col_double(),
+    ##   ILITOTAL = col_double(),
+    ##   `NUM. OF PROVIDERS` = col_double(),
+    ##   `TOTAL PATIENTS` = col_double()
+    ## )
+
+``` r
+X2018_2019 <- read_csv("data/2018-2019.csv", 
+                       skip = 1)
+```
+
+    ## 
+    ## -- Column specification --------------------------------------------------------
+    ## cols(
+    ##   YEAR = col_double(),
+    ##   WEEK = col_double(),
+    ##   `AGE 0-4` = col_double(),
+    ##   `AGE 5-24` = col_double(),
+    ##   `AGE 25-49` = col_double(),
+    ##   `AGE 25-64` = col_character(),
+    ##   `AGE 50-64` = col_double(),
+    ##   `AGE 65` = col_double(),
+    ##   ILITOTAL = col_double(),
+    ##   `TOTAL PATIENTS` = col_double(),
+    ##   `NUM. OF PROVIDERS` = col_double(),
+    ##   `%UNWEIGHTED ILI` = col_double(),
+    ##   `% WEIGHTED ILI` = col_double()
+    ## )
+
+``` r
+View(X2020_2021)
+```
+
 # Data preperaption - We had to read in our data originally from excel files and had to upload it into R Studio, we did this by doing read csv. input in R, this was done under the dplyr package (Wickham and Hester 2020).
+
+``` r
+wili <- 
+  bind_rows(
+    X2018_2019, 
+    X2019_2020, 
+    X2020_2021) %>% 
+  filter(
+    !(YEAR == 2018 ), 
+    !(YEAR == 2019 & WEEK < 12),
+    !(YEAR == 2020 & WEEK >= 8 & WEEK < 12)
+  ) %>% 
+  transmute(
+    year = YEAR,
+    week = WEEK,
+    treatment = ifelse(YEAR == 2019 | YEAR == 2020 & WEEK < 12, 
+                       "Not COVID", "COVID"), 
+    wili =  `% WEIGHTED ILI`
+  )
+```
 
 # When we get our data sets, what we see is that we have a large number of unnessacary information within our tables, so we have to split it up, I took off the weeks that do not correlate due to the fact that 2019 has completed a full year of data, and 2021 has not completed, therefore we had to have both of the weeks correlate in both years, specifically we are looking at week 40 of the last cumulitave year all the way to week seven of that current year. By using the filter function in the dplyr package (Hadley et al. 2020) we were able to do the necessary actions in order to take out our unnecesary weeks.
 

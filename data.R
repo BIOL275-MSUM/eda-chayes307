@@ -1,4 +1,3 @@
-
 # Load packages -----------------------------------------------------------
 
 library(tidyverse)
@@ -20,11 +19,11 @@ wili <-
     X2018_2019, 
     X2019_2020, 
     X2020_2021) %>% 
-filter(
-  !(YEAR == 2018 ), 
-  !(YEAR == 2019 & WEEK < 12),
-  !(YEAR == 2020 & WEEK >= 8 & WEEK < 12)
-) %>% 
+  filter(
+    !(YEAR == 2018 ), 
+    !(YEAR == 2019 & WEEK < 12),
+    !(YEAR == 2020 & WEEK >= 8 & WEEK < 12)
+  ) %>% 
   transmute(
     year = YEAR,
     week = WEEK,
@@ -32,10 +31,4 @@ filter(
                        "Not COVID", "COVID"), 
     wili =  `% WEIGHTED ILI`
   )
-
-# CReate a time series (ggplot) for each input, very important
-
-
-
-
 
