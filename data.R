@@ -2,7 +2,7 @@
 
 library(tidyverse)
 library(readr)
-
+library(lubridate)
 
 # Read data ---------------------------------------------------------------
 
@@ -27,8 +27,29 @@ wili <-
   transmute(
     year = YEAR,
     week = WEEK,
+   date =  as_date(paste0(year, "-01-01")) + weeks(week),
     treatment = ifelse(YEAR == 2019 | YEAR == 2020 & WEEK < 12, 
                        "Not COVID", "COVID"), 
     wili =  `% WEIGHTED ILI`
-  )
+   ) %>%
+  group_by(treatment) %>% 
+  mutate(x =  1:n())
+
+# graph -------------------------------------------------------------------
+
+ggplot(data = wili) +
+
+geom_bar(mapping = aes(x = treatment))
+
+ggplot(data = wili) +
+  geom_bar(mapping = aes(x = treatment), fill = "#C5351B") +
+  labs(x = "treatment", y = "wili (number of people)")
+
+ggplot(data = wili) +
+  geom_line(mapping = aes(x = date, y = wili, color = treatment))
+
+ggplot(data = wili) +
+  geom_line(mapping = aes(x = x, y = wili, color = treatment)) +
+  scale_y_continuous(breaks = seq(from=-1,by=10,length.out=6))
+                     
 
