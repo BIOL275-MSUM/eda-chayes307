@@ -101,8 +101,9 @@ What we see is this large difference in our influenza like illness rates
 where we see this super large dip when COVID started to rise, compared
 to when COVID did not occur, and we see this super large hike in
 influnza rates, and we need to figure out why. There are many variables
-and other things.  
-\#\# Discussion
+and other things.
+
+## Discussion
 
 This data is super important in our time line. It shows us that with all
 of the special precautions that we took with COVID-19 influenza rates

@@ -110,6 +110,7 @@ ggplot(data = wili) +
 ```
 
 What we see is this large difference in our influenza like illness rates where we see this super large dip when COVID started to rise, compared to when COVID did not occur, and we see this super large hike in influnza rates, and we need to figure out why. There are many variables and other things.        
+
 ## Discussion
 
 This data is super important in our time line. It shows us that with all of the special precautions that we took with COVID-19 influenza rates actually plummeted. This shows that if we are not super close all the time around one another, then our transmission rates will decrease drastially over time.Compared to our non covid time, we see a large up ward trend as the time throughout the flu season preceded.  
